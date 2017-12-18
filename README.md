@@ -3,7 +3,7 @@
 
 Just a simple live chat made using React, Material-UI and Socket.IO
 
-Live version at: ui.break96.hasura-app.io 
+Live version at: https://ui.break96.hasura-app.io 
 
 **Features include**:
     
@@ -28,7 +28,7 @@ Make sure the following ports are free:
 Installing
 ---
    
-This app is made with React. You can build React with Webpack and Babel but it is simpler to use Create-React-App by @FacebookIncubators.
+This app is made with React. You can build React with Webpack and Babel but it is simpler to use Create-React-App by [@FacebookIncubators](https://github.com/facebookincubator).
 
 Simply run `npm start` in the root directory to deploy the app automatically.
 
@@ -51,9 +51,9 @@ Future Updates
 Built With
 ---
 
-   .[Create-React-App](https://github.com/facebookincubator/create-react-app)
-   .[Socket.IO](https://socket.io/)
-   .[Material-UI](www.material-ui.com/#/get-started/usage)
+   * [Create-React-App](https://github.com/facebookincubator/create-react-app)
+   * [Socket.IO](https://socket.io/)
+   * [Material-UI](www.material-ui.com/#/get-started/usage)
 
 Authors
 ---
