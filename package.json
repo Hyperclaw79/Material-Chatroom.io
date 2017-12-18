@@ -1,0 +1,24 @@
+{
+  "name": "Material-Chatroom.io",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "concurrently": "^3.5.1",
+    "express": "^4.16.2",
+    "jquery": "^3.2.1",
+    "material-ui": "^0.20.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.0.17",
+    "socket.io": "^2.0.4"
+  },
+  "scripts": {
+    "start": "npm update && concurrently --kill-others \"react-scripts start\" \"node socks.js\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+	},
+  "devDependencies": {
+    "css-loader": "^0.28.7"
+  }
+}
