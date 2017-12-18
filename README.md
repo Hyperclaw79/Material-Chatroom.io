@@ -13,7 +13,7 @@ Live version at: https://ui.break96.hasura-app.io
   - Custom commands: 
 		- Status: Set Status with `/s {message}`.
 		- Clear: Clear all the messages with `/clear`.
-  - Whisper feature: [/w {nickname} {message}]
+  - Whisper feature: `/w {nickname} {message}`
   - Beeps on new message.
   - Auto scroll 
 
