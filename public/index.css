@@ -453,7 +453,7 @@ h1 {
   box-shadow:5px 5px 50px #100;border:2.5px ridge black;
 }
 
-@media only screen and (max-width: 600px)  {
+@media only screen and (max-width: 768px)  {
   body{
     width: auto;
     float: none;
@@ -462,10 +462,53 @@ h1 {
   }  
   #input-container {
       position: fixed !important;
-      bottom: 10px !important;
-      width:100% !important;
-      margin-left: 0 !important;
+      bottom: 0 !important;
+      width:95% !important;
+      margin-left: 0.75% !important;
+      margin-right: 0.75% !important;
       z-index: 99  !important;
   }
-  
+  #input-container button {right: 20px !important;}
+  #submit_icon {
+    font-size: 20px !important;
+  }
+  #inputbar-ava {
+    margin-left: 2% !important;
+    margin-top: 17px !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+  #message_input {display: none !important;}
+  #message_input_alt {display: inline-block !important; margin: 10px !important;}
+
+  .Feeds-Header, .Feeds-container {
+      width: 95% !important;
+      margin-left: 1% !important;
+      margin-right: 1% !important;
+  }
+  .Feeds-container{margin-top: 60px !important;margin-bottom: 62px !important;}
+  .Online-Header, .online-list {
+    display: none !important;
+  }
+
+  .point-container{display: none !important;}
+  .avatars{
+    width:40px !important;
+    height:40px !important;
+    margin-bottom: 0 !important;
+    margin-left: -10px !important;
+  }
+  .message{word-wrap: normal !important;}
+  .messageText{
+    height: 40px !important;
+    margin-right: 0px !important;
+    margin-left: 25px !important;
+    margin-top: -40px !important;
+    margin-bottom: 10px !important;
+    width: 85% !important;
+    overflow-y: hidden !important;
+    overflow-x: auto !important;
+    transform: translateX(-10px);
+  }
+  .messageText::-webkit-scrollbar {height: 5px !important;}
 }

@@ -7,7 +7,6 @@ import handler from "./handler";
 import io from "socket.io-client";
 import Snackbar from 'material-ui/Snackbar';
 import $ from "jquery";
-import { setInterval } from 'timers';
 
 var socket = io('https://api.break96.hasura-app.io', { forceNew: true });
 
@@ -60,9 +59,10 @@ class Layout extends React.Component{
             return false; 
         });
         $('#send-message').submit(function(){
-            if($('#message_input').val()) {  
-                socket.emit('chat message', $('#message_input').val());
+            if($('#message_input').val()||$('#message_input_alt').val()) {  
+                socket.emit('chat message', $('#message_input').val()||$('#message_input_alt').val());
                 $('#message_input').val('');
+                $('#message_input_alt').val('');
                 return false;
             }
         });
@@ -142,7 +142,7 @@ class Layout extends React.Component{
                             <h1 style={{marginLeft:"35%",marginTop:"10px"}}>Chat Messages</h1>
                             </Paper>
                             <Paper zDepth={3} className = "Feeds-container" id="feeder"
-								style={{backgroundColor:"#000",width:"50%",height:"85%", overflowY:"auto",
+								style={{backgroundColor:"#000",width:"50%",height:"calc(90% - 74px)", overflowY:"auto",
 								marginLeft:"50px",marginTop:"80px",position:"absolute",
 								boxShadow:"5px 5px 50px #D50000", backgroundImage:"url('starry_bg_std.png')",border:"1px solid red"}}>
         {/*Render Messages here.*/}
@@ -164,7 +164,7 @@ class Layout extends React.Component{
                                                     borderColor:(item.color||"red"), borderWidth:"2px",borderStyle:"groove",
                                                     borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px", overflowY:"auto",
                                                     borderTopLeftRadius:"10px",borderTopRightRadius:"10px", marginBottom:"25px"}}>
-                                                    <p style={{height:"100%",color:(item.color||"red"),padding:"10px",wordWrap:"break-word",
+                                                    <p className="message" style={{height:"100%",color:(item.color||"red"),padding:"10px",wordWrap:"break-word",
 															borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px",
 															borderTopLeftRadius:"10px",borderTopRightRadius:"10px",mixBlendMode: "hard-light"}}>
 													   {item.message}
@@ -181,7 +181,7 @@ class Layout extends React.Component{
                             <form id="send-message" action="">
                                 <Paper zDepth={5} id = "input-container"
                                     style={{backgroundColor:"rgba(255,0,0,0.75)",width:"50%",height:"62px",
-                                    marginLeft:"50px",position:"absolute",marginTop:"41%",
+                                    marginLeft:"50px",position:"absolute",bottom:"0px",
                                     boxShadow:"5px 5px 50px #100",border:"2.5px ridge black"}}>
                                     <Avatar id="inputbar-ava" src="man.ico" style={{margin:"1%",marginLeft:"25px"}}/>
                                     <input type="text" id="message_input" style={{position:"absolute",margin:"10px",height:"35px",width:"77%",
@@ -189,6 +189,11 @@ class Layout extends React.Component{
                                     borderTopRightRadius:"10px",borderTopLeftRadius:"10px", paddingLeft:"15px",
                                     backgroundColor:"rgba(0,0,0,0.75)",color:"white",
                                     fontSize:"16px"}} placeholder="Whisper: '/w {nick} message', Chat: 'message', Status: '/s status'."/>
+                                    <input type="text" id="message_input_alt" style={{position:"absolute",height:"35px",width:"85%",
+                                    borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px", display: "none",
+                                    borderTopRightRadius:"10px",borderTopLeftRadius:"10px", paddingLeft:"1px",
+                                    backgroundColor:"rgba(0,0,0,0.75)",color:"white",
+                                    fontSize:"16px"}} placeholder=" Whisper: /w; Status: /s."/>
                                     <button 
                                         style={{width:"25px",background:"rgba(130, 226, 255, 0)",border: "none", padding:"2px",
                                             position: "absolute",right:"95px", marginTop: "15px",cursor:"pointer"}}

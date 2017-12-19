@@ -10,6 +10,7 @@ Live version at: https://ui.break96.hasura-app.io
   - Custom Nickname, color picker and avatar.
   - Socket based communication - live update.
   - Dynamic list of online users.
+  - Responsive design.
   - Custom commands: 
 		- Status: Set Status with `/s {message}`.
 		- Clear: Clear all the messages with `/clear`.
@@ -39,14 +40,13 @@ The live version of this app is deployed using Hasura. Check out [Create-React-A
 
 Future Updates
 ---
-   * Responsive Design using CSS Media Queries
    * Support for avatar upload from local system
    * Authentication and Sessions 
    * More custom commands
    * Multiple Themes 
    * Dashboard and multiple Chatrooms
    * Desktop notifications
-   * Markdown ,emojis and file embed support   
+   * File Embed support   
 
 Built With
 ---
@@ -62,6 +62,7 @@ Authors
    
 Acknowledgements
 ---
-[Hasura](hasura.io) for their amazing BaaS cli.
-Any future contributors. 
+ - [Hasura](hasura.io) for their amazing BaaS cli.
+ - [Joe Harry](https://codepen.io/woodwork/) for his amazing Animated Form @[Codepen].(https://codepen.io/woodwork/full/pgLvEr/)
+ - Any future contributors. 
     
