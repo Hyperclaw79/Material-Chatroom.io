@@ -1,6 +1,6 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font: 13px Helvetica, Arial;	background-color:#f0f0ee; font:1em "Trebuchet MS";
-    background-image: url(background.jpg);
+    background-image: url(background.jpg); min-height:100%;
     background-size: cover; background-repeat: no-repeat; background-attachment: fixed; }
 #contentWrap { display: none; }
 

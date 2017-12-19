@@ -102,7 +102,7 @@ class Layout extends React.Component{
             $('#feeder').append($('<strong style="color:red;font-size:small;margin:40px;display:block">').text(data));
         });
         socket.on('clear', (data)=>{
-            $('#feeder').empty();
+            $($('#feeder').get(0)).empty();
         });    
     }
     componentDidUpdate() {
@@ -146,36 +146,38 @@ class Layout extends React.Component{
 								marginLeft:"50px",marginTop:"80px",position:"absolute",
 								boxShadow:"5px 5px 50px #D50000", backgroundImage:"url('starry_bg_std.png')",border:"1px solid red"}}>
         {/*Render Messages here.*/}
-                            {this.state.msglist.map((item,i)=>{
-                                if(item.nick==="") return null;
-                                else {
-                                    return(                
-                                        <div className="Messages-Container" style={{margin:"20px",marginBottom:"40px"}} key={i}>
-                                            <Avatar className="avatars" size={80} src={item.ava===''?"man.ico":item.ava} style={{float:"left",marginBottom:"20px"}}/>
-                                            <div className="point-container" style={{paddingTop:"25px",width:"20px", margin:"0",
-                                                display:"inline",marginLeft:"25px",height:"0"}}>
-                                                <div id="point" style={{width:"0",height:"0",marginLeft:"85px",
-                                                    border:"20px solid transparent",borderRightColor:(item.color||"red"),
-                                                    borderLeft:"none",borderRightWidth:"20px"}} />
+                            <div className="message wrapper">
+                                {this.state.msglist.map((item,i)=>{
+                                    if(item.nick==="") return null;
+                                    else {
+                                        return(                
+                                            <div className="Messages-Container" style={{margin:"20px",marginBottom:"40px"}} key={i}>
+                                                <Avatar className="avatars" size={80} src={item.ava===''?"man.ico":item.ava} style={{float:"left",marginBottom:"20px"}}/>
+                                                <div className="point-container" style={{paddingTop:"25px",width:"20px", margin:"0",
+                                                    display:"inline",marginLeft:"25px",height:"0"}}>
+                                                    <div id="point" style={{width:"0",height:"0",marginLeft:"85px",
+                                                        border:"20px solid transparent",borderRightColor:(item.color||"red"),
+                                                        borderLeft:"none",borderRightWidth:"20px"}} />
+                                                </div>
+                                                <div className="messageText" 
+                                                    style={{width:"75%",float:"right",height:"80px",
+                                                        backgroundColor:"rgba(255,255,255,0.5)",marginRight:"50px",marginTop:"-55px",
+                                                        borderColor:(item.color||"red"), borderWidth:"2px",borderStyle:"groove",
+                                                        borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px", overflowY:"auto",
+                                                        borderTopLeftRadius:"10px",borderTopRightRadius:"10px", marginBottom:"25px"}}>
+                                                        <p className="message" style={{height:"100%",color:(item.color||"red"),padding:"10px",wordWrap:"break-word",
+                                                                borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px",
+                                                                borderTopLeftRadius:"10px",borderTopRightRadius:"10px",mixBlendMode: "hard-light"}}>
+                                                        {item.message}
+                                                        </p>
+                                                </div>
                                             </div>
-                                            <div className="messageText" 
-                                                style={{width:"75%",float:"right",height:"80px",
-                                                    backgroundColor:"rgba(255,255,255,0.5)",marginRight:"50px",marginTop:"-55px",
-                                                    borderColor:(item.color||"red"), borderWidth:"2px",borderStyle:"groove",
-                                                    borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px", overflowY:"auto",
-                                                    borderTopLeftRadius:"10px",borderTopRightRadius:"10px", marginBottom:"25px"}}>
-                                                    <p className="message" style={{height:"100%",color:(item.color||"red"),padding:"10px",wordWrap:"break-word",
-															borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px",
-															borderTopLeftRadius:"10px",borderTopRightRadius:"10px",mixBlendMode: "hard-light"}}>
-													   {item.message}
-													</p>
-                                            </div>
-                                        </div>
-                                    )}
-                                }
-                            )}        
+                                        )}
+                                    }
+                                )}
+                            </div>        
         {/*End of Messages*/}
-							<div style={{ float:"left", clear: "both", height: "40px" }}
+							<div id="auto-scroll" style={{ float:"left", clear: "both", height: "40px" }}
                                 ref={(el) => { this.messagesEnd = el; }} />
                             </Paper>
                             <form id="send-message" action="">
