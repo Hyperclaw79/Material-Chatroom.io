@@ -57,8 +57,24 @@ io.on('connection', socket => {
     else if(msg.substr(0,7)==="/clear"){
         socket.emit("clear","");
     }
-    else {  
-        io.emit('send message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
+    else {
+        if (msg.startsWith('*') && msg.endsWith('*')) {
+            msg = "<b>"+msg.replace('*','')+"</b>"
+            io.emit('send message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
+        }
+        else if (msg.startsWith('_') && msg.endsWith('_')) {
+            msg = "<i>"+msg.replace('_','')+"</i>"
+            io.emit('send message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
+        }
+        else if (msg.startsWith('~') && msg.endsWith('~')) {
+            msg = "<del>"+msg.replace('~','')+"</del>"
+            io.emit('send message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
+        }
+        else if (msg.startsWith('`') && msg.endsWith('`')) {
+            msg = "<code><mark style='background-color:#7FB3D5'>"+msg.replace('`','')+"</mark></code>"
+            io.emit('send message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
+        }
+        else    io.emit('send message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
     }
   });
   socket.on('disconnect',() => {
