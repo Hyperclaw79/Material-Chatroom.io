@@ -102,7 +102,7 @@ class Layout extends React.Component{
             $('#feeder').append($('<strong style="color:red;font-size:small;margin:40px;display:block">').text(data));
         });
         socket.on('clear', (data)=>{
-            $($('#feeder').get(0)).empty();
+            $($('#feeder').get(0).firstChild).empty();
         });    
     }
     componentDidUpdate() {
