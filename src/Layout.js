@@ -8,7 +8,7 @@ import io from "socket.io-client";
 import Snackbar from 'material-ui/Snackbar';
 import $ from "jquery";
 
-var socket = io('https://api.break96.hasura-app.io', { forceNew: true });
+var socket = io('localhost:8080', { forceNew: true });
 
 class Layout extends React.Component{
     constructor(props){
@@ -83,6 +83,19 @@ class Layout extends React.Component{
                 curr.splice(0,1);
             }
             let received = {"nick":data.nick,"message":data.message,"color":data.color,"ava":data.ava};
+            if (received.message.startsWith('*') && received.message.endsWith('*')) {
+                received.message = <b>{received.message.replace(new RegExp('&ast;', 'gi'),'')}</b>
+            }
+            else if (received.message.startsWith('_') && received.message.endsWith('_')) {
+                received.message = <i>{received.message.replace(new RegExp('_', 'gi'),'')}</i>
+            }
+            else if (received.message.startsWith('~') && received.message.endsWith('~')) {
+                received.message = <del>{received.message.replace(new RegExp('~', 'gi'),'')}</del>
+            }
+            else if (received.message.startsWith('`') && received.message.endsWith('`')) {
+                received.message = <code><mark style={{backgroundColor:'#7FB3D5'}}>{received.message.replace(new RegExp('`', 'gi'),'')}</mark></code>
+            }
+            console.log(received.message);
             curr.push(received);
 			this.setState({msglist:curr});
 			$('#pop_ding')[0].play()
