@@ -17,6 +17,11 @@ Live version at: https://ui.break96.hasura-app.io
   - Whisper feature: `/w {nickname} {message}`
   - Beeps on new message.
   - Auto scroll
+  - Text Formatting:
+    - Bold: \*text\*
+    - Italics: \_ text \_
+    - Strikethrough: ~ text ~
+    - Codeblock: \` text \`
   - Embeds 
 
 Prerequisites
