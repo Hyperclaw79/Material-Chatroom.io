@@ -453,6 +453,16 @@ h1 {
   box-shadow:5px 5px 50px #100;border:2.5px ridge black;
 }
 
+
+iframe {
+  margin: 0;
+  padding: 0;
+  border: none;
+  scroll-behavior: smooth;
+  width: 400px;
+  height: 400px;
+}
+
 @media only screen and (max-width: 768px)  {
   body{
     width: auto;
@@ -511,4 +521,9 @@ h1 {
     transform: translateX(-10px);
   }
   .messageText::-webkit-scrollbar {height: 5px !important;}
+  .Embed-Container {
+    width: 200px;
+    height: 200px;
+  }
 }
+

@@ -7,6 +7,7 @@ import handler from "./handler";
 import io from "socket.io-client";
 import Snackbar from 'material-ui/Snackbar';
 import $ from "jquery";
+import CustomCard from './Custom_Card';
 
 var socket = io('localhost:8080', { forceNew: true });
 
@@ -16,7 +17,8 @@ class Layout extends React.Component{
         this.state = {
             msglist: [{
                 nick: "",message: "",
-                color: "",ava: ""
+                color: "",ava: "",
+                embed: false, em_data:""
             }],
             userlist: [],
             open: false,
@@ -26,6 +28,9 @@ class Layout extends React.Component{
     }
 	scrollToBottom = () => {
         this.messagesEnd.scrollIntoView(false,{ behavior: "smooth" });
+    }
+    flip_embed() {
+        this.setState({embed:{flag:false}});
     }
     componentDidMount(){
         handler();
@@ -82,9 +87,9 @@ class Layout extends React.Component{
             if (curr[0].nick===""){
                 curr.splice(0,1);
             }
-            let received = {"nick":data.nick,"message":data.message,"color":data.color,"ava":data.ava};
+            let received = {"nick":data.nick,"message":data.message,"color":data.color,"ava":data.ava,"embed":false};
             if (received.message.startsWith('*') && received.message.endsWith('*')) {
-                received.message = <b>{received.message.replace(new RegExp('&ast;', 'gi'),'')}</b>
+                received.message = <b>{received.message.replace(new RegExp('\\*', 'gi'),'')}</b>
             }
             else if (received.message.startsWith('_') && received.message.endsWith('_')) {
                 received.message = <i>{received.message.replace(new RegExp('_', 'gi'),'')}</i>
@@ -95,7 +100,16 @@ class Layout extends React.Component{
             else if (received.message.startsWith('`') && received.message.endsWith('`')) {
                 received.message = <code><mark style={{backgroundColor:'#7FB3D5'}}>{received.message.replace(new RegExp('`', 'gi'),'')}</mark></code>
             }
-            console.log(received.message);
+            curr.push(received);
+            this.setState({msglist:curr});
+            $('#pop_ding')[0].play()
+        });
+        socket.on('embed message',(data)=>{
+            let curr = this.state.msglist;
+            if (curr[0].nick===""){
+                curr.splice(0,1);
+            }
+            let received = {"nick":data.nick,"message":"","embed":true,"em_data":data.message,"ava":data.ava};
             curr.push(received);
 			this.setState({msglist:curr});
 			$('#pop_ding')[0].play()
@@ -109,10 +123,10 @@ class Layout extends React.Component{
             setInterval(()=>this.setState({open:false}),5000);
         });
         socket.on('whisper', (data)=>{
-            $('#feeder').append($('<strong style="color:yellow;font-style:italic;margin:40px;display:block">').text(data.nick+" whispered: "+data.message));
+            $($('#feeder').get(0).firstChild).append($('<strong style="color:yellow;font-style:italic;margin:40px;display:block">').text(data.nick+" whispered: "+data.message));
         });
         socket.on('custom_error', (data)=>{
-            $('#feeder').append($('<strong style="color:red;font-size:small;margin:40px;display:block">').text(data));
+            $($('#feeder').get(0).firstChild).append($('<strong style="color:red;font-size:small;margin:40px;display:block">').text(data));
         });
         socket.on('clear', (data)=>{
             $($('#feeder').get(0).firstChild).empty();
@@ -127,7 +141,7 @@ class Layout extends React.Component{
             <MuiThemeProvider>
                 <div id="superWrap">
                     <div id="nickWrap">
-                        <h2 id="nickError" style={{color:"rgb(255, 255, 255)",marginLeft:"30%",marginTop:"10%"}}></h2>
+                        <h2 id="nickError" style={{color:"rgb(255, 255, 255)",marginLeft:"30%",marginTop:"10%"}}> </h2>
                         <div className='form-overlay'></div>
                         <div className='icon fa fa-keyboard-o' id='form-container'>
                             <span className='icon fa fa-close' id='form-close'></span>
@@ -159,30 +173,43 @@ class Layout extends React.Component{
 								marginLeft:"50px",marginTop:"80px",position:"absolute",
 								boxShadow:"5px 5px 50px #D50000", backgroundImage:"url('starry_bg_std.png')",border:"1px solid red"}}>
         {/*Render Messages here.*/}
-                            <div className="message wrapper">
+                            <div id="message wrapper" className="message wrapper">
                                 {this.state.msglist.map((item,i)=>{
                                     if(item.nick==="") return null;
                                     else {
                                         return(                
-                                            <div className="Messages-Container" style={{margin:"20px",marginBottom:"40px"}} key={i}>
-                                                <Avatar className="avatars" size={80} src={item.ava===''?"man.ico":item.ava} style={{float:"left",marginBottom:"20px"}}/>
-                                                <div className="point-container" style={{paddingTop:"25px",width:"20px", margin:"0",
-                                                    display:"inline",marginLeft:"25px",height:"0"}}>
-                                                    <div id="point" style={{width:"0",height:"0",marginLeft:"85px",
-                                                        border:"20px solid transparent",borderRightColor:(item.color||"red"),
-                                                        borderLeft:"none",borderRightWidth:"20px"}} />
+                                            <div className="Message-Conditonal-Wrap" key={i}>
+                                                <div className="Messages-Container" 
+                                                    style={{margin:"20px",marginBottom:"40px",display:(item.embed?"none":"block")}}>
+                                                    <Avatar className="avatars" size={80} src={item.ava===''?"man.ico":item.ava} 
+                                                        style={{float:"left",marginBottom:"20px"}} alt={item.nick}/>
+                                                    <div className="point-container" style={{paddingTop:"25px",width:"20px", margin:"0",
+                                                        display:"inline",marginLeft:"25px",height:"0"}}>
+                                                        <div id="point" style={{width:"0",height:"0",marginLeft:"85px",
+                                                            border:"20px solid transparent",borderRightColor:(item.color||"red"),
+                                                            borderLeft:"none",borderRightWidth:"20px"}} />
+                                                    </div>
+                                                    <div className="messageText" 
+                                                        style={{width:"75%",float:"right",height:"80px",
+                                                            backgroundColor:"rgba(255,255,255,0.5)",marginRight:"50px",marginTop:"-55px",
+                                                            borderColor:(item.color||"red"), borderWidth:"2px",borderStyle:"groove",
+                                                            borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px", overflowY:"auto",
+                                                            borderTopLeftRadius:"10px",borderTopRightRadius:"10px", marginBottom:"25px"}}>
+                                                            <p className="message" style={{height:"100%",color:(item.color||"red"),padding:"10px",wordWrap:"break-word",
+                                                                    borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px",
+                                                                    borderTopLeftRadius:"10px",borderTopRightRadius:"10px",mixBlendMode: "hard-light"}}>
+                                                            {item.message}
+                                                            </p>
+                                                    </div>
                                                 </div>
-                                                <div className="messageText" 
-                                                    style={{width:"75%",float:"right",height:"80px",
-                                                        backgroundColor:"rgba(255,255,255,0.5)",marginRight:"50px",marginTop:"-55px",
-                                                        borderColor:(item.color||"red"), borderWidth:"2px",borderStyle:"groove",
-                                                        borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px", overflowY:"auto",
-                                                        borderTopLeftRadius:"10px",borderTopRightRadius:"10px", marginBottom:"25px"}}>
-                                                        <p className="message" style={{height:"100%",color:(item.color||"red"),padding:"10px",wordWrap:"break-word",
-                                                                borderBottomLeftRadius:"10px",borderBottomRightRadius:"10px",
-                                                                borderTopLeftRadius:"10px",borderTopRightRadius:"10px",mixBlendMode: "hard-light"}}>
-                                                        {item.message}
-                                                        </p>
+                                                <div className="Embed-Container" 
+                                                    style={{display:(item.embed?"block":"none"),
+                                                        width: "80%",height: "80%",marginTop:"20px", marginBottom:"20px",
+                                                        marginLeft: "auto",marginRight: "auto"}}>
+                                                        <CustomCard
+                                                            user={item.nick}
+                                                            ava={item.ava===''?"man.ico":item.ava}
+                                                            obj={item.em_data}  />
                                                 </div>
                                             </div>
                                         )}
@@ -193,7 +220,7 @@ class Layout extends React.Component{
 							<div id="auto-scroll" style={{ float:"left", clear: "both", height: "40px" }}
                                 ref={(el) => { this.messagesEnd = el; }} />
                             </Paper>
-                            <form id="send-message" action="">
+                            <form id="send-message" action="" autoComplete="off">
                                 <Paper zDepth={5} id = "input-container"
                                     style={{backgroundColor:"rgba(255,0,0,0.75)",width:"50%",height:"62px",
                                     marginLeft:"50px",position:"absolute",bottom:"0px",

@@ -26,6 +26,7 @@ io.on('connection', socket => {
   });
   socket.on('chat message', (data) => {
     msg = data.trim();  
+    const pattern = new RegExp("^(https:\/\/www.|http:\/\/www.|www.|https:\/\/|http:\/\/)?([a-z0-9]+[-.]{1})+([a-z0-9]+)*(\.[a-z]{2,5})+(\/.*)?$","gmi");
     if(msg.substr(0,3)==="/w "){
         msg = msg.substr(3);
         const ind = msg.indexOf(' ');
@@ -56,6 +57,30 @@ io.on('connection', socket => {
     }
     else if(msg.substr(0,7)==="/clear"){
         socket.emit("clear","");
+    }
+    else if (pattern.test(msg)) {
+        var request = require('request');
+        request.head(msg, (error, response, body)=> {
+            if(response && (response.statusCode===200||response.statusCode===304) && !(response.headers['x-frame-options'])){
+                if (msg.startsWith('http') && !(msg.startsWith('https'))) {
+                    msg = msg.replace('http','https');
+                    io.emit('embed message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
+                }
+                else if (msg.startsWith('https')) {
+                    io.emit('embed message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
+                }
+                else {
+                    msg = 'https://'+msg;
+                    io.emit('embed message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
+                }
+            }
+            else if (response&&response.headers['x-frame-options']){
+                io.emit('custom_error',"Sorry, that site prevents embedding.")
+            }
+            else {
+                io.emit('embed message', {'message':"404.html",'nick':socket.nickname,'color':socket.color,'ava':socket.ava});
+            }
+        });
     }
     else {
         io.emit('send message', {'message':msg,'nick':socket.nickname,'color':socket.color,'ava':socket.ava});

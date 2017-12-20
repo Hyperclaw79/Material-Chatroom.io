@@ -16,7 +16,8 @@ Live version at: https://ui.break96.hasura-app.io
 		- Clear: Clear all the messages with `/clear`.
   - Whisper feature: `/w {nickname} {message}`
   - Beeps on new message.
-  - Auto scroll 
+  - Auto scroll
+  - Embeds 
 
 Prerequisites
 ---
@@ -43,10 +44,9 @@ Future Updates
    * Support for avatar upload from local system
    * Authentication and Sessions 
    * More custom commands
-   * Multiple Themes 
    * Dashboard and multiple Chatrooms
    * Desktop notifications
-   * File Embed support   
+   
 
 Built With
 ---
